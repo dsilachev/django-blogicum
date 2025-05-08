@@ -44,16 +44,15 @@ posts = [
     }
 ]
 
+POSTS_BY_ID = {post['id']: post for post in posts}
+
 
 def index(request):
     return render(request, 'blog/index.html', {'posts': reversed(posts)})
 
 
 def post_detail(request, id):
-    post = next(
-        (post for post in posts if post['id'] == id),
-        None
-    )
+    post = POSTS_BY_ID.get(id)
     if post is None:
         raise Http404("Пост не найден")
     return render(request, 'blog/detail.html', {'post': post})
